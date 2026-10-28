@@ -1,0 +1,39 @@
+{
+  "name": "deadlock-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "installer-info": "node scripts/installer-info.mjs",
+    "predev": "node scripts/installer-info.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/installer-info.mjs",
+    "build": "node scripts/installer-info.mjs && npm run contrast && tsc --noEmit && vite build",
+    "check:download": "node scripts/check-download.mjs",
+    "preview": "vite preview --port 4173 --strictPort",
+    "contrast": "node scripts/contrast.mjs",
+    "icons": "node scripts/icons.mjs",
+    "shots": "node scripts/shots.mjs",
+    "frames": "node scripts/frames.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "perf": "node scripts/perf.mjs",
+    "perf:headed": "node scripts/perf.mjs --headed",
+    "reduced": "node scripts/reduced.mjs",
+    "font-metrics": "node scripts/font-metrics.mjs",
+    "verify": "npm run build && npm run shots && npm run frames && npm run reduced && npm run lighthouse"
+  },
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/plus-jakarta-sans": "^5.3.0",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.27"
+  },
+  "devDependencies": {
+    "chrome-launcher": "^1.2.2",
+    "lighthouse": "^13.5.0",
+    "playwright": "^1.64.1",
+    "sharp": "^0.35.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}

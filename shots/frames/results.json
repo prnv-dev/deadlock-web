@@ -1,0 +1,198 @@
+{
+  "intro-desktop": {
+    "framesCaptured": 76,
+    "spanMs": 1617
+  },
+  "intro-mobile": {
+    "framesCaptured": 80,
+    "spanMs": 1626
+  },
+  "deadbolt-scroll-desktop": [
+    {
+      "scrollY": 0,
+      "boltX": 0,
+      "status": "locked"
+    },
+    {
+      "scrollY": 50,
+      "boltX": -12.7,
+      "status": "locked"
+    },
+    {
+      "scrollY": 101,
+      "boltX": -83.1,
+      "status": "unlocked"
+    },
+    {
+      "scrollY": 151,
+      "boltX": -103.9,
+      "status": "unlocked"
+    },
+    {
+      "scrollY": 201,
+      "boltX": -97,
+      "status": "unlocked"
+    },
+    {
+      "scrollY": 251,
+      "boltX": -33.4,
+      "status": "unlocked"
+    },
+    {
+      "scrollY": 302,
+      "boltX": -0.6,
+      "status": "locked"
+    },
+    {
+      "scrollY": 352,
+      "boltX": 0,
+      "status": "locked"
+    }
+  ],
+  "deadbolt-scroll-mobile": [
+    {
+      "scrollY": 0,
+      "boltX": 0,
+      "status": "locked"
+    },
+    {
+      "scrollY": 94,
+      "boltX": -12.9,
+      "status": "locked"
+    },
+    {
+      "scrollY": 188,
+      "boltX": -82.7,
+      "status": "unlocked"
+    },
+    {
+      "scrollY": 281,
+      "boltX": -103.9,
+      "status": "unlocked"
+    },
+    {
+      "scrollY": 375,
+      "boltX": -97.2,
+      "status": "unlocked"
+    },
+    {
+      "scrollY": 469,
+      "boltX": -33.4,
+      "status": "unlocked"
+    },
+    {
+      "scrollY": 563,
+      "boltX": -0.7,
+      "status": "locked"
+    },
+    {
+      "scrollY": 656,
+      "boltX": 0,
+      "status": "locked"
+    }
+  ],
+  "bento-reveal": {
+    "opacityBefore": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "opacityAfter": [
+      1,
+      1,
+      1,
+      1,
+      0,
+      0,
+      0
+    ],
+    "framesCaptured": 56
+  },
+  "steps-pinned": [
+    {
+      "trackX": 0,
+      "rail": 0,
+      "active": 1
+    },
+    {
+      "trackX": -65,
+      "rail": 0.13,
+      "active": 1
+    },
+    {
+      "trackX": -227,
+      "rail": 0.46,
+      "active": 2
+    },
+    {
+      "trackX": -401,
+      "rail": 0.8,
+      "active": 3
+    },
+    {
+      "trackX": -494,
+      "rail": 0.99,
+      "active": 4
+    },
+    {
+      "trackX": -498,
+      "rail": 1,
+      "active": 4
+    },
+    {
+      "trackX": -498,
+      "rail": 1,
+      "active": 4
+    },
+    {
+      "trackX": -498,
+      "rail": 1,
+      "active": 4
+    }
+  ],
+  "mobile-menu": {
+    "afterOpen": {
+      "dialogOpen": true,
+      "ariaExpanded": "true",
+      "scrollLocked": true,
+      "focused": "Close menu"
+    },
+    "tabCycle": [
+      "in-dialog",
+      "in-dialog",
+      "in-dialog",
+      "in-dialog",
+      "in-dialog",
+      "in-dialog",
+      "in-dialog",
+      "in-dialog",
+      "in-dialog"
+    ],
+    "afterEsc": {
+      "dialogOpen": false,
+      "ariaExpanded": "false",
+      "scrollLocked": false,
+      "focusReturnedToToggle": true
+    },
+    "sheetLinkToFaq": {
+      "dialogOpen": false,
+      "faqTop": 96,
+      "hash": "#faq"
+    }
+  },
+  "theme-and-faq": {
+    "afterToggle": {
+      "dataTheme": "dark",
+      "stored": "dark",
+      "label": "Switch to light theme"
+    },
+    "persistedAfterReload": "dark",
+    "faqOpened": true,
+    "faqClosedAgain": true
+  },
+  "consoleErrors": []
+}

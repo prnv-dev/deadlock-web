@@ -1,0 +1,70 @@
+/* Self-hosted, latin subset only (@fontsource files, hashed by Vite). */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../../node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../../node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../../node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../../node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-700-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url("../../node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-800-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("../../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../../node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2") format("woff2");
+}
+/* Metric-matched local fallbacks so the swap does not reflow text (CLS).
+   Values measured by scripts/font-metrics.mjs. */
+@font-face {
+  font-family: "Jakarta Fallback";
+  font-weight: 400 600;
+  src: local("Arial"), local("ArialMT"), local("Helvetica");
+  size-adjust: 105.3%;
+  ascent-override: 98.8%;
+  descent-override: 20.9%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Jakarta Fallback";
+  font-weight: 700 800;
+  src: local("Arial Bold"), local("Arial-BoldMT"), local("Helvetica Bold");
+  size-adjust: 103%;
+  ascent-override: 101%;
+  descent-override: 21.4%;
+  line-gap-override: 0%;
+}

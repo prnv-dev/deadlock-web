@@ -1,0 +1,654 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Deadlock: free, local-first encrypted file vault for Windows</title>
+    <meta name="description" content="Deadlock is a free, local-first encrypted vault for Windows. Add files and they are stored encrypted on your own PC. No account, no cloud sync.">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#F3EADF" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#14100B" media="(prefers-color-scheme: dark)">
+    <meta name="author" content="{{author}}">
+    {{canonical}}
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Deadlock">
+    <meta property="og:title" content="Deadlock: your private files, behind a real lock">
+    <meta property="og:description" content="A free, local-first encrypted vault for Windows. No account, no cloud sync.">
+    <meta property="og:image" content="{{ogImage}}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="The Deadlock app icon with the line: Your private files, behind a real lock.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Deadlock: your private files, behind a real lock">
+    <meta name="twitter:description" content="A free, local-first encrypted vault for Windows. No account, no cloud sync.">
+    <meta name="twitter:image" content="{{ogImage}}">
+
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <link rel="preload" href="/node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/node_modules/@fontsource/plus-jakarta-sans/files/plus-jakarta-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+
+    <script>
+      /* Runs before first paint: theme choice + one-per-session intro flag. */
+      (function () {
+        var d = document.documentElement;
+        d.classList.remove('no-js');
+        d.classList.add('js');
+        try {
+          var t = localStorage.getItem('dl-theme');
+          if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t);
+        } catch (e) {}
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        d.classList.add('motion');
+        try {
+          if (!sessionStorage.getItem('dl-intro')) {
+            d.classList.add('intro');
+            sessionStorage.setItem('dl-intro', '1');
+          }
+        } catch (e) {
+          d.classList.add('intro');
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="/src/styles/main.css">
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <svg class="sprite" aria-hidden="true" focusable="false">
+      <symbol id="logo-tile" viewBox="0 0 1024 1024">
+        <rect x="32" y="32" width="960" height="960" rx="224" fill="#A5661A"/>
+        <g transform="translate(512 512) scale(1.2) translate(-512 -512)">
+          <rect x="683" y="352" width="136" height="320" rx="44" fill="#CDAB81"/>
+          <rect x="355" y="464" width="420" height="96" rx="48" fill="#FFFFFF"/>
+          <circle cx="355" cy="512" r="150" fill="#FFFFFF"/>
+          <circle cx="355" cy="486" r="38" fill="#A5661A"/>
+          <path d="M336 500 L374 500 L388 580 Q389 592 377 592 L333 592 Q321 592 322 580 Z" fill="#A5661A"/>
+        </g>
+      </symbol>
+      <symbol id="i-arrow-down" viewBox="0 0 24 24">
+        <path d="M12 4.5v12m0 0-5-5m5 5 5-5M5 19.5h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24">
+        <path d="M5 12h13m0 0-5-5m5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-theme" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/>
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path d="m6.5 12.5 3.5 3.5 7.5-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+      <symbol id="i-lock-small" viewBox="0 0 24 24">
+        <g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="10.5" width="14" height="10" rx="3"/>
+          <path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>
+        </g>
+      </symbol>
+    </svg>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <div class="bg" aria-hidden="true">
+      <div class="bg-tone"></div>
+      <div class="blob-wrap blob-wrap--1"><div class="blob blob--1"></div></div>
+      <div class="blob-wrap blob-wrap--2"><div class="blob blob--2"></div></div>
+      <div class="blob-wrap blob-wrap--3"><div class="blob blob--3"></div></div>
+      <div class="grain"></div>
+    </div>
+
+    <header class="site-header">
+      <div class="nav-wrap">
+        <nav class="nav" aria-label="Primary">
+          <a class="brand" href="#top">
+            <svg class="brand-mark" aria-hidden="true" focusable="false"><use href="#logo-tile"/></svg>
+            <span class="brand-name">Deadlock</span>
+          </a>
+          <div class="nav-links-wrap">
+            <ul class="nav-links">
+              <li><a href="#features" data-nav="features">Features</a></li>
+              <li><a href="#how-it-works" data-nav="how-it-works">How it works</a></li>
+              <li><a href="#limits" data-nav="limits">Honest limits</a></li>
+              <li><a href="#faq" data-nav="faq">FAQ</a></li>
+            </ul>
+            <span class="nav-indicator" aria-hidden="true"></span>
+          </div>
+          <div class="nav-actions">
+            <button class="icon-btn theme-toggle" type="button" aria-label="Switch to dark theme" data-theme-toggle>
+              <svg aria-hidden="true" focusable="false"><use href="#i-theme"/></svg>
+            </button>
+            <a class="btn btn-primary btn-sm" href="{{download}}" download data-magnetic>Download</a>
+            <button class="icon-btn menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu" commandfor="mobile-menu" command="show-modal">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4.5 9h15M4.5 15h15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <dialog class="sheet" id="mobile-menu" aria-label="Menu">
+      <div class="sheet-inner">
+        <div class="sheet-top">
+          <a class="brand" href="#top" data-sheet-link>
+            <svg class="brand-mark" aria-hidden="true" focusable="false"><use href="#logo-tile"/></svg>
+            <span class="brand-name">Deadlock</span>
+          </a>
+          <button class="icon-btn sheet-close" type="button" autofocus aria-label="Close menu" commandfor="mobile-menu" command="close">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6.5 6.5 11 11m0-11-11 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <nav aria-label="Menu">
+          <ul class="sheet-links">
+            <li><a href="#features" data-sheet-link><span>Features</span></a></li>
+            <li><a href="#how-it-works" data-sheet-link><span>How it works</span></a></li>
+            <li><a href="#limits" data-sheet-link><span>Honest limits</span></a></li>
+            <li><a href="#faq" data-sheet-link><span>FAQ</span></a></li>
+          </ul>
+        </nav>
+        <div class="sheet-bottom">
+          <button class="btn btn-secondary sheet-theme" type="button" data-theme-toggle>
+            <svg class="btn-icon" aria-hidden="true" focusable="false"><use href="#i-theme"/></svg>
+            <span data-theme-label>Switch to dark theme</span>
+          </button>
+          <a class="btn btn-primary" href="{{download}}" download>
+            <svg class="btn-icon" aria-hidden="true" focusable="false"><use href="#i-arrow-down"/></svg>
+            <span>Download for Windows</span>
+          </a>
+        </div>
+      </div>
+    </dialog>
+
+    <main id="main" tabindex="-1">
+      <!-- HERO -->
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="pill intro-item" style="--d: .02s">
+              <span class="pill-dot" aria-hidden="true"></span>
+              Free <span aria-hidden="true">·</span> Windows 10 / 11 <span aria-hidden="true">·</span> {{version}}
+            </p>
+            <h1 class="hero-title" id="hero-title" tabindex="-1">
+              <span class="line"><span class="line-in" style="--i: 0">Your private files<span class="p">,</span></span></span>
+              <span class="line"><span class="line-in" style="--i: 1">behind a <em>real lock<span class="p">.</span></em></span></span>
+            </h1>
+            <p class="hero-sub intro-item" style="--d: .12s">Deadlock is a local-first encrypted vault for Windows. Add files, they are stored encrypted on your own PC. No account, no cloud sync.</p>
+            <div class="hero-actions intro-item" style="--d: .4s">
+              <a class="btn btn-primary btn-lg" href="{{download}}" download data-magnetic>
+                <svg class="btn-icon" aria-hidden="true" focusable="false"><use href="#i-arrow-down"/></svg>
+                <span>Download for Windows</span>
+              </a>
+              <a class="btn btn-secondary btn-lg" href="{{source}}">
+                <span>View source on GitHub</span>
+                <svg class="btn-icon btn-icon--end" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg>
+              </a>
+            </div>
+            <p class="hero-meta intro-item" style="--d: .44s">{{installerFilename}} <span aria-hidden="true">·</span> {{installerSizeMb}} MB <span aria-hidden="true">·</span> Windows 10 / 11</p>
+            <details class="verify-disclosure intro-item" style="--d: .46s">
+              <summary><span>Verify your download</span></summary>
+              <div class="verify-body">
+                <p class="verify-note">The hash on this page must match the one Windows prints.</p>
+                <div class="verify-group">
+                  <span class="verify-label">SHA-256</span>
+                  <code class="verify-code">{{installerSha256}}</code>
+                </div>
+                <div class="verify-group">
+                  <span class="verify-label">PowerShell</span>
+                  <code class="verify-code">Get-FileHash .\{{installerFilename}} -Algorithm SHA256</code>
+                </div>
+              </div>
+            </details>
+            <p class="hero-note intro-item" style="--d: .48s">The installer is downloaded directly from this site and is not code-signed yet, so Windows SmartScreen may show a warning the first time. <a href="#faq-smartscreen">Why, and what to do</a></p>
+          </div>
+
+          <div class="hero-stage" data-tilt-zone>
+            <div class="hero-card-wrap">
+              <div class="lock-card" data-tilt role="img" aria-label="Illustration of the Deadlock lock screen: a masked password field, an Unlock button, a recovery key option and the status Vault locked.">
+                <div class="lock-mark">
+                  <svg class="bolt" viewBox="150 280 740 464" aria-hidden="true" focusable="false">
+                    <rect class="bolt-plate" x="683" y="352" width="136" height="320" rx="44"/>
+                    <g class="bolt-intro"><g class="bolt-scrub"><rect class="bolt-bar" x="355" y="464" width="420" height="96" rx="48"/></g></g>
+                    <circle class="bolt-disc" cx="355" cy="512" r="150"/>
+                    <g class="bolt-keyhole">
+                      <circle cx="355" cy="486" r="38"/>
+                      <path d="M336 500 L374 500 L388 580 Q389 592 377 592 L333 592 Q321 592 322 580 Z"/>
+                    </g>
+                  </svg>
+                </div>
+                <div class="lock-head">
+                  <p class="lock-title">Deadlock</p>
+                  <p class="lock-sub">Encrypted File Vault for Windows</p>
+                </div>
+                <div class="lock-field">
+                  <span class="lock-dots">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</span>
+                  <span class="lock-caret"></span>
+                </div>
+                <span class="lock-btn">Unlock</span>
+                <span class="lock-link">Forgot password? Use recovery key</span>
+                <span class="lock-status">
+                  <svg aria-hidden="true" focusable="false"><use href="#i-lock-small"/></svg>
+                  <span class="lock-status-text">
+                    <span class="status-locked">Vault locked</span>
+                    <span class="status-open">Vault unlocked</span>
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="chip-wrap" aria-hidden="true">
+              <div class="chip">
+                <span class="chip-icon"><svg focusable="false"><use href="#i-check"/></svg></span>
+                Backup verified
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container"><div class="divider" aria-hidden="true"><svg viewBox="0 0 1200 16" preserveAspectRatio="none" focusable="false"><path pathLength="1" d="M3 9C140 5 270 11 420 8S700 4 860 8 1090 11 1197 7"/></svg></div></div>
+
+      <!-- FEATURES -->
+      <section class="section" id="features" aria-labelledby="features-title">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow" data-reveal>What it does</p>
+            <h2 class="section-title" id="features-title" tabindex="-1" data-split>One idea, done carefully<span class="p">.</span></h2>
+            <p class="section-sub" data-reveal>Add to Vault. Everything else exists to make that safe: strong encryption, a recovery key, verified backups and a lock screen that gives nothing away.</p>
+          </header>
+
+          <ul class="bento" data-bento>
+            <li class="card card--wide card--vault" data-card>
+              <span class="card-glow" aria-hidden="true"></span>
+              <div class="card-text">
+                <h3 class="card-title">Add to Vault</h3>
+                <p>Pick files or folders and they go into an encrypted vault. Open, preview or restore them whenever you unlock.</p>
+              </div>
+              <div class="scene scene--vault" data-scene="vault">
+                <svg viewBox="0 0 660 280" role="img" aria-label="Three files, a PDF, an image and a text file, move toward a vault door and turn into scrambled blocks as they cross a line." focusable="false">
+                  <defs>
+                    <pattern id="cipher-a" width="27" height="27" patternUnits="userSpaceOnUse">
+                      <rect width="7" height="7" rx="1.5" class="cb o9"/><rect x="9" width="7" height="7" rx="1.5" class="cb o4"/><rect x="18" width="7" height="7" rx="1.5" class="cb o7"/>
+                      <rect y="9" width="7" height="7" rx="1.5" class="cb o5"/><rect x="9" y="9" width="7" height="7" rx="1.5" class="cb o9"/><rect x="18" y="9" width="7" height="7" rx="1.5" class="cb o3"/>
+                      <rect y="18" width="7" height="7" rx="1.5" class="cb o3"/><rect x="9" y="18" width="7" height="7" rx="1.5" class="cb o7"/><rect x="18" y="18" width="7" height="7" rx="1.5" class="cb o5"/>
+                    </pattern>
+                    <pattern id="cipher-b" width="27" height="27" patternUnits="userSpaceOnUse">
+                      <rect width="7" height="7" rx="1.5" class="cb o4"/><rect x="9" width="7" height="7" rx="1.5" class="cb o8"/><rect x="18" width="7" height="7" rx="1.5" class="cb o3"/>
+                      <rect y="9" width="7" height="7" rx="1.5" class="cb o9"/><rect x="9" y="9" width="7" height="7" rx="1.5" class="cb o3"/><rect x="18" y="9" width="7" height="7" rx="1.5" class="cb o7"/>
+                      <rect y="18" width="7" height="7" rx="1.5" class="cb o6"/><rect x="9" y="18" width="7" height="7" rx="1.5" class="cb o4"/><rect x="18" y="18" width="7" height="7" rx="1.5" class="cb o9"/>
+                    </pattern>
+                    <clipPath id="clip-plain"><rect x="-200" y="0" width="560" height="280"/></clipPath>
+                    <clipPath id="clip-cipher"><rect x="360" y="0" width="400" height="280"/></clipPath>
+                  </defs>
+
+                  <g class="v-rails">
+                    <path d="M24 72H468M24 140H468M24 208H468"/>
+                  </g>
+
+                  <g class="v-door">
+                    <rect class="v-hinge" x="462" y="92" width="10" height="24" rx="4"/>
+                    <rect class="v-hinge" x="462" y="164" width="10" height="24" rx="4"/>
+                    <circle class="v-door-outer" cx="560" cy="140" r="92"/>
+                    <circle class="v-door-ring" cx="560" cy="140" r="72"/>
+                    <g class="v-wheel">
+                      <circle class="v-door-ring" cx="560" cy="140" r="22"/>
+                      <path class="v-spokes" d="M560 118V84M560 162V196M541 129 511.6 112M579 151 608.4 168M541 151 511.6 168M579 129 608.4 112"/>
+                    </g>
+                    <circle class="v-hub" cx="560" cy="140" r="7"/>
+                  </g>
+
+                  <g class="v-gate">
+                    <path class="v-line" d="M360 30V250"/>
+                    <circle class="v-line-cap" cx="360" cy="30" r="3"/>
+                    <circle class="v-line-cap" cx="360" cy="250" r="3"/>
+                    <rect class="v-flash" data-flash="0" x="356" y="34" width="8" height="76" rx="4"/>
+                    <rect class="v-flash" data-flash="1" x="356" y="102" width="8" height="76" rx="4"/>
+                    <rect class="v-flash" data-flash="2" x="356" y="170" width="8" height="76" rx="4"/>
+                  </g>
+
+                  <!-- Plain halves (left of the line) -->
+                  <g clip-path="url(#clip-plain)">
+                    <g transform="translate(24 34)"><g class="v-file" data-file="0" transform="translate(306 0)">
+                      <rect class="f-card" width="60" height="76" rx="10"/>
+                      <rect class="f-badge" x="9" y="11" width="22" height="11" rx="4"/>
+                      <path class="f-lines" d="M10 36H50M10 46H46M10 56H36"/>
+                    </g></g>
+                    <g transform="translate(24 102)"><g class="v-file" data-file="1" transform="translate(110 0)">
+                      <rect class="f-card" width="60" height="76" rx="10"/>
+                      <rect class="f-frame" x="9" y="10" width="42" height="34" rx="5"/>
+                      <circle class="f-sun" cx="40" cy="20" r="4"/>
+                      <path class="f-lines" d="M11 41 22 29l8 8 6-5 13 9M10 56H42"/>
+                    </g></g>
+                    <g transform="translate(24 170)"><g class="v-file" data-file="2" transform="translate(400 0)">
+                      <rect class="f-card" width="60" height="76" rx="10"/>
+                      <path class="f-lines" d="M10 16H50M10 26H44M10 36H50M10 46H38M10 56H47"/>
+                    </g></g>
+                  </g>
+
+                  <!-- Encrypted halves (right of the line) -->
+                  <g clip-path="url(#clip-cipher)">
+                    <g transform="translate(24 34)"><g class="v-file" data-file="0" transform="translate(306 0)">
+                      <rect class="f-card f-card--enc" width="60" height="76" rx="10"/>
+                      <rect x="9" y="10" width="43" height="56" fill="url(#cipher-a)"/>
+                    </g></g>
+                    <g transform="translate(24 102)"><g class="v-file" data-file="1" transform="translate(110 0)">
+                      <rect class="f-card f-card--enc" width="60" height="76" rx="10"/>
+                      <rect x="9" y="10" width="43" height="56" fill="url(#cipher-b)"/>
+                    </g></g>
+                    <g transform="translate(24 170)"><g class="v-file" data-file="2" transform="translate(400 0)">
+                      <rect class="f-card f-card--enc" width="60" height="76" rx="10"/>
+                      <rect x="9" y="10" width="43" height="56" fill="url(#cipher-a)"/>
+                    </g></g>
+                  </g>
+                </svg>
+              </div>
+            </li>
+
+            <li class="card" data-card>
+              <span class="card-glow" aria-hidden="true"></span>
+              <span class="card-icon icon-shield" aria-hidden="true">
+                <svg viewBox="0 0 48 48" focusable="false">
+                  <path data-draw pathLength="1" d="M24 6.5 38 11.5V23c0 8.5-6 15-14 18.5C16 38 10 31.5 10 23V11.5Z"/>
+                  <path data-draw pathLength="1" class="i-shield-check" d="m18.5 24 4 4 7.5-8"/>
+                </svg>
+              </span>
+              <h3 class="card-title">Boring cryptography</h3>
+              <p>XChaCha20-Poly1305 encrypts your files. Argon2id turns your password into a key. Built on libsodium.</p>
+              <ul class="tags" aria-label="Building blocks">
+                <li>XChaCha20-Poly1305</li><li>Argon2id</li><li>libsodium</li>
+              </ul>
+            </li>
+
+            <li class="card" data-card>
+              <span class="card-glow" aria-hidden="true"></span>
+              <span class="card-icon icon-drive" aria-hidden="true">
+                <svg viewBox="0 0 48 48" focusable="false">
+                  <rect data-draw pathLength="1" x="7" y="14" width="34" height="20" rx="6"/>
+                  <path data-draw pathLength="1" d="M13 27.5h10M13 21.5h6"/>
+                  <circle class="i-drive-led" cx="34" cy="27.5" r="1.6"/>
+                </svg>
+              </span>
+              <h3 class="card-title">Local-first</h3>
+              <p>Your vault is a folder on your PC, or a drive you choose. No account to create and no cloud sync to trust.</p>
+            </li>
+
+            <li class="card card--wide card--key" data-card>
+              <span class="card-glow" aria-hidden="true"></span>
+              <div class="card-text">
+                <h3 class="card-title">A recovery key you can actually keep</h3>
+                <p>Forget your password and the recovery key still opens your vault. Save it to a file, keep it offline. Regenerate it and the old one stops working at once.</p>
+              </div>
+              <figure class="rkey" data-scene="recovery">
+                <span class="visually-hidden">A recovery key is shown as 14 groups of 4 characters.</span>
+                <div class="rkey-grid" aria-hidden="true">
+                  <span>DEMO</span><span>ONLY</span><span>NOTA</span><span>REAL</span>
+                  <span>KEY0</span><span>AAAA</span><span>BBBB</span><span>CCCC</span>
+                  <span>DDDD</span><span>EEEE</span><span>FFFF</span><span>1234</span>
+                  <span>5678</span><span>0000</span>
+                </div>
+                <figcaption>Example format only. This is not a real key.</figcaption>
+              </figure>
+            </li>
+
+            <li class="card card--backup" data-card>
+              <span class="card-glow" aria-hidden="true"></span>
+              <div class="scene scene--backup" data-scene="backup">
+                <svg viewBox="0 0 300 120" role="img" aria-label="A vault folder copied to a second folder on another drive, then marked as verified." focusable="false">
+                  <g class="b-folder">
+                    <path d="M18 38a8 8 0 0 1 8-8h20l8 8h40a8 8 0 0 1 8 8v40a8 8 0 0 1-8 8H26a8 8 0 0 1-8-8Z"/>
+                    <path class="b-blocks" d="M38 58h8M52 58h8M66 58h12M38 70h14M58 70h8M72 70h6"/>
+                  </g>
+                  <path class="b-line" pathLength="1" d="M110 62c26-24 54 24 80 0"/>
+                  <g class="b-folder">
+                    <path d="M196 38a8 8 0 0 1 8-8h20l8 8h40a8 8 0 0 1 8 8v40a8 8 0 0 1-8 8h-68a8 8 0 0 1-8-8Z"/>
+                    <path class="b-blocks" d="M216 58h8M230 58h8M244 58h12M216 70h14M236 70h8M250 70h6"/>
+                  </g>
+                  <g class="b-badge">
+                    <circle cx="272" cy="32" r="15"/>
+                    <path class="b-check" pathLength="1" d="m265 32.5 5 5 9-10"/>
+                  </g>
+                </svg>
+              </div>
+              <h3 class="card-title">Backups that verify</h3>
+              <p>Back up vault copies the encrypted folder to a drive you pick, then checks every file against the original.</p>
+            </li>
+
+            <li class="card" data-card>
+              <span class="card-glow" aria-hidden="true"></span>
+              <span class="card-icons" aria-hidden="true">
+                <span class="card-icon icon-lock">
+                  <svg viewBox="0 0 48 48" focusable="false">
+                    <path data-draw pathLength="1" class="i-shackle" d="M16 21v-5a8 8 0 0 1 16 0v5"/>
+                    <rect data-draw pathLength="1" x="11" y="21" width="26" height="19" rx="6"/>
+                    <path data-draw pathLength="1" d="M24 28.5v4"/>
+                  </svg>
+                </span>
+                <span class="card-icon icon-clip">
+                  <svg viewBox="0 0 48 48" focusable="false">
+                    <rect data-draw pathLength="1" x="12" y="10" width="24" height="31" rx="6"/>
+                    <rect data-draw pathLength="1" x="18" y="7" width="12" height="6" rx="3"/>
+                    <path data-draw pathLength="1" class="i-clip-lines" d="M18 22h12M18 28h9M18 34h11"/>
+                  </svg>
+                </span>
+              </span>
+              <h3 class="card-title">Locks behind you</h3>
+              <p>Auto-lock when you step away. Anything you copy is cleared after 30 seconds and kept out of Windows clipboard history.</p>
+            </li>
+
+            <li class="card" data-card>
+              <span class="card-glow" aria-hidden="true"></span>
+              <span class="card-icon icon-eye" aria-hidden="true">
+                <svg viewBox="0 0 48 48" focusable="false">
+                  <path data-draw pathLength="1" d="M6 24c4.5-7.5 10.5-11.5 18-11.5S37.5 16.5 42 24c-4.5 7.5-10.5 11.5-18 11.5S10.5 31.5 6 24Z"/>
+                  <circle data-draw pathLength="1" cx="24" cy="24" r="5.5"/>
+                  <path data-draw pathLength="1" class="i-eye-slash" d="M11 37 37 11"/>
+                </svg>
+              </span>
+              <h3 class="card-title">A quiet lock screen</h3>
+              <p>Locked means locked. The lock screen does not show where your vault lives or what is inside it.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="container"><div class="divider" aria-hidden="true"><svg viewBox="0 0 1200 16" preserveAspectRatio="none" focusable="false"><path pathLength="1" d="M3 8C170 11 300 4 470 8S760 12 900 8 1100 5 1197 9"/></svg></div></div>
+
+      <!-- HOW IT WORKS -->
+      <section class="section steps-section" id="how-it-works" aria-labelledby="how-title">
+        <div class="steps-stage">
+          <div class="container">
+            <header class="section-head">
+              <p class="eyebrow" data-reveal>Setup</p>
+              <h2 class="section-title" id="how-title" tabindex="-1" data-split>Four steps<span class="p">,</span> then it is yours<span class="p">.</span></h2>
+            </header>
+          </div>
+          <div class="steps-viewport">
+            <div class="steps-track">
+            <div class="steps-rail" aria-hidden="true"><span class="steps-rail-fill"></span></div>
+            <ol class="steps">
+              <li class="step" data-step>
+                <div class="step-top">
+                  <span class="step-num">01</span>
+                  <span class="step-icon" aria-hidden="true">
+                    <svg viewBox="0 0 48 48" focusable="false">
+                      <path data-draw pathLength="1" d="M7 15a4 4 0 0 1 4-4h8l4 4h14a4 4 0 0 1 4 4v15a4 4 0 0 1-4 4H11a4 4 0 0 1-4-4Z"/>
+                      <circle data-draw pathLength="1" cx="24" cy="26" r="3.5"/>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="step-title">Location</h3>
+                <p>Choose where the vault folder lives. Uninstalling Deadlock never deletes it.</p>
+              </li>
+              <li class="step" data-step>
+                <div class="step-top">
+                  <span class="step-num">02</span>
+                  <span class="step-icon" aria-hidden="true">
+                    <svg viewBox="0 0 48 48" focusable="false">
+                      <rect data-draw pathLength="1" x="6" y="16" width="36" height="16" rx="6"/>
+                      <path data-draw pathLength="1" d="M14 24h.01M20 24h.01M26 24h.01M33 20v8"/>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="step-title">Password</h3>
+                <p>Set a master password. Only you know it, and it is never stored in plain form.</p>
+              </li>
+              <li class="step" data-step>
+                <div class="step-top">
+                  <span class="step-num">03</span>
+                  <span class="step-icon" aria-hidden="true">
+                    <svg viewBox="0 0 48 48" focusable="false">
+                      <circle data-draw pathLength="1" cx="15" cy="24" r="7.5"/>
+                      <path data-draw pathLength="1" d="M22.5 24H42M35.5 24v6M40.5 24v4"/>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="step-title">Recovery key</h3>
+                <p>Save the key to a USB drive or write it down. Keep it away from this PC.</p>
+              </li>
+              <li class="step" data-step>
+                <div class="step-top">
+                  <span class="step-num">04</span>
+                  <span class="step-icon" aria-hidden="true">
+                    <svg viewBox="0 0 48 48" focusable="false">
+                      <circle data-draw pathLength="1" cx="24" cy="24" r="16"/>
+                      <path data-draw pathLength="1" d="m17 24.5 5 5 9.5-10.5"/>
+                    </svg>
+                  </span>
+                </div>
+                <h3 class="step-title">Confirm</h3>
+                <p>Type two groups of the key to prove you saved it. Only then is the vault created.</p>
+              </li>
+            </ol>
+            </div>
+          </div>
+          <div class="container">
+            <p class="steps-foot" data-reveal>Nothing is written to disk until you finish. Close the window halfway and setup simply starts again.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="container"><div class="divider" aria-hidden="true"><svg viewBox="0 0 1200 16" preserveAspectRatio="none" focusable="false"><path pathLength="1" d="M3 7C150 10 320 5 480 9S740 11 920 7 1110 6 1197 9"/></svg></div></div>
+
+      <!-- HONEST LIMITS -->
+      <section class="section" id="limits" aria-labelledby="limits-title">
+        <div class="container">
+          <header class="section-head">
+            <p class="eyebrow" data-reveal>Before you trust it</p>
+            <h2 class="section-title" id="limits-title" tabindex="-1" data-split>Honest limits of version 0.1<span class="p">.</span></h2>
+          </header>
+          <ul class="limits" data-stagger>
+            <li class="limit" data-reveal>
+              <h3 class="limit-title">Windows only</h3>
+              <p>Deadlock runs on Windows 10 and 11. There is no macOS, Linux or phone version.</p>
+            </li>
+            <li class="limit" data-reveal>
+              <h3 class="limit-title">Not independently audited</h3>
+              <p>It is built on well-known libraries, but there has been no outside security review yet.</p>
+            </li>
+            <li class="limit" data-reveal>
+              <h3 class="limit-title">Unsigned installer</h3>
+              <p>Windows SmartScreen may warn you until the app has a code-signing certificate.</p>
+            </li>
+            <li class="limit" data-reveal>
+              <h3 class="limit-title">No sync between devices</h3>
+              <p>Your vault stays on the PC or drive you chose. Back it up yourself.</p>
+            </li>
+            <li class="limit" data-reveal>
+              <h3 class="limit-title">Deleted folder means deleted files</h3>
+              <p>The recovery key restores access, not a vault folder you removed. Keep a backup.</p>
+            </li>
+            <li class="limit" data-reveal>
+              <h3 class="limit-title">No password and no recovery key means no way in</h3>
+              <p>Nobody, including the author, can recover your files.</p>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="container"><div class="divider" aria-hidden="true"><svg viewBox="0 0 1200 16" preserveAspectRatio="none" focusable="false"><path pathLength="1" d="M3 9C130 6 290 11 450 7S730 5 880 9 1080 11 1197 7"/></svg></div></div>
+
+      <!-- FAQ -->
+      <section class="section" id="faq" aria-labelledby="faq-title">
+        <div class="container faq-grid">
+          <header class="section-head">
+            <p class="eyebrow" data-reveal>FAQ</p>
+            <h2 class="section-title" id="faq-title" tabindex="-1" data-split>Questions<span class="p">,</span> answered plainly<span class="p">.</span></h2>
+          </header>
+          <div class="faq" data-stagger>
+            <details class="faq-item" id="faq-free" data-reveal>
+              <summary><span>Is Deadlock really free?</span><span class="faq-icon" aria-hidden="true"><i></i><i></i></span></summary>
+              <div class="faq-body"><p>Yes. There is no paid tier and no account. The source code is on GitHub.</p></div>
+            </details>
+            <details class="faq-item" id="faq-smartscreen" data-reveal>
+              <summary><span>Windows says &ldquo;protected your PC&rdquo;. Is that a problem?</span><span class="faq-icon" aria-hidden="true"><i></i><i></i></span></summary>
+              <div class="faq-body"><p>The installer is downloaded directly from this site and is not code-signed yet, and SmartScreen warns about apps it does not know. Choose More info, then Run anyway. If you are unsure, build it from the source yourself.</p></div>
+            </details>
+            <details class="faq-item" id="faq-forgot" data-reveal>
+              <summary><span>What if I forget my password?</span><span class="faq-icon" aria-hidden="true"><i></i><i></i></span></summary>
+              <div class="faq-body"><p>Use your recovery key on the lock screen. It opens the vault without the password, and you can set a new password afterwards. Without either, the files cannot be recovered.</p></div>
+            </details>
+            <details class="faq-item" id="faq-moved" data-reveal>
+              <summary><span>What if the vault folder gets deleted or moved?</span><span class="faq-icon" aria-hidden="true"><i></i><i></i></span></summary>
+              <div class="faq-body"><p>If it was moved, point Deadlock at the new place. If it was deleted, restore it from a backup. The app never creates a fresh empty vault by itself, and the recovery key cannot bring back deleted files, so keep backups on another drive.</p></div>
+            </details>
+            <details class="faq-item" id="faq-upload" data-reveal>
+              <summary><span>Does it upload my files anywhere?</span><span class="faq-icon" aria-hidden="true"><i></i><i></i></span></summary>
+              <div class="faq-body"><p>No. Deadlock has no accounts and no cloud sync. Your vault stays in the folder you chose. You can read the code on GitHub to check.</p></div>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="section cta-section" aria-labelledby="cta-title" data-flip-follow>
+        <div class="container">
+          <div class="cta-card" data-cta>
+            <svg class="cta-mark" viewBox="150 280 740 464" aria-hidden="true" focusable="false">
+              <rect x="683" y="352" width="136" height="320" rx="44"/>
+              <rect x="355" y="464" width="420" height="96" rx="48"/>
+              <circle cx="355" cy="512" r="150"/>
+            </svg>
+            <h2 class="cta-title" id="cta-title">Lock it down in a few minutes<span class="p">.</span></h2>
+            <p class="cta-sub">Free, local, no account. Windows 10 / 11.</p>
+            <a class="btn btn-light btn-lg" href="{{download}}" download data-magnetic>
+              <svg class="btn-icon" aria-hidden="true" focusable="false"><use href="#i-arrow-down"/></svg>
+              <span>Download for Windows</span>
+            </a>
+            <p class="cta-meta">{{installerFilename}} <span aria-hidden="true">·</span> {{installerSizeMb}} MB <span aria-hidden="true">·</span> Windows 10 / 11</p>
+            <details class="verify-disclosure verify-disclosure--cta">
+              <summary><span>Verify your download</span></summary>
+              <div class="verify-body">
+                <p class="verify-note">The hash on this page must match the one Windows prints.</p>
+                <div class="verify-group">
+                  <span class="verify-label">SHA-256</span>
+                  <code class="verify-code">{{installerSha256}}</code>
+                </div>
+                <div class="verify-group">
+                  <span class="verify-label">PowerShell</span>
+                  <code class="verify-code">Get-FileHash .\{{installerFilename}} -Algorithm SHA256</code>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer" data-flip-follow>
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <a class="brand" href="#top">
+            <svg class="brand-mark" aria-hidden="true" focusable="false"><use href="#logo-tile"/></svg>
+            <span class="brand-name">Deadlock</span>
+          </a>
+          <p class="footer-by">Made by {{author}}</p>
+        </div>
+        <ul class="footer-links">
+          <li><a href="{{source}}">GitHub</a></li>
+          <li><a href="{{issues}}">Report an issue</a></li>
+        </ul>
+        <p class="footer-copy">&copy; {{year}} {{author}}</p>
+      </div>
+    </footer>
+  </body>
+</html>

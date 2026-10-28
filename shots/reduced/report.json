@@ -1,0 +1,74 @@
+{
+  "reduced-motion desktop": {
+    "atTop": {
+      "revealTargets": 67,
+      "notFullyVisible": [
+        "eyebrow",
+        "section-title",
+        "section-sub",
+        "card card--wide card--vault",
+        "card",
+        "card",
+        "card card--wide card--key",
+        "card card--backup",
+        "card",
+        "card"
+      ],
+      "runningAnimations": [],
+      "introClass": false,
+      "lenis": false,
+      "stepsPinned": false,
+      "boltTransform": null
+    },
+    "afterScroll": {
+      "revealTargets": 67,
+      "notFullyVisible": [],
+      "runningAnimations": [],
+      "introClass": false,
+      "lenis": false,
+      "stepsPinned": false,
+      "boltTransform": null
+    }
+  },
+  "javascript-disabled desktop": {
+    "checked": 31,
+    "notFullyVisible": 0,
+    "htmlClass": "no-js"
+  },
+  "reduced-motion mobile": {
+    "atTop": {
+      "revealTargets": 67,
+      "notFullyVisible": [
+        "eyebrow",
+        "section-title",
+        "section-sub",
+        "card card--wide card--vault",
+        "card",
+        "card",
+        "card card--wide card--key",
+        "card card--backup",
+        "card",
+        "card"
+      ],
+      "runningAnimations": [],
+      "introClass": false,
+      "lenis": false,
+      "stepsPinned": false,
+      "boltTransform": null
+    },
+    "afterScroll": {
+      "revealTargets": 67,
+      "notFullyVisible": [],
+      "runningAnimations": [],
+      "introClass": false,
+      "lenis": false,
+      "stepsPinned": false,
+      "boltTransform": null
+    }
+  },
+  "javascript-disabled mobile": {
+    "checked": 31,
+    "notFullyVisible": 0,
+    "htmlClass": "no-js"
+  }
+}

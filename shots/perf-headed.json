@@ -1,0 +1,35 @@
+{
+  "headed": true,
+  "results": [
+    {
+      "case": "desktop 1280x800, wheel",
+      "frames": 520,
+      "avg fps": 107.1,
+      "median ms": 7,
+      "p95 ms": 14,
+      "p99 ms": 20.9,
+      "frames > 25ms": 1,
+      "% > 25ms": 0.2
+    },
+    {
+      "case": "desktop 1920x1080, wheel",
+      "frames": 531,
+      "avg fps": 98.8,
+      "median ms": 7,
+      "p95 ms": 14,
+      "p99 ms": 20.8,
+      "frames > 25ms": 2,
+      "% > 25ms": 0.4
+    },
+    {
+      "case": "phone 390x844, touch, 4x CPU slowdown",
+      "frames": 527,
+      "avg fps": 89.9,
+      "median ms": 7.1,
+      "p95 ms": 20.9,
+      "p99 ms": 27.7,
+      "frames > 25ms": 7,
+      "% > 25ms": 1.3
+    }
+  ]
+}

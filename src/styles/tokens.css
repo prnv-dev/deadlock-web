@@ -1,0 +1,140 @@
+/*
+ * Brand tokens. scripts/contrast.mjs parses the blocks between
+ * "@tokens <name>" and "@end" markers and fails the build if any
+ * text/background pair drops below WCAG AA. Keep the two dark blocks identical.
+ */
+:root {
+  color-scheme: light;
+  /* @tokens light */
+  --bg: #F3EADF;
+  --surface: #FFFAF3;
+  --surface-2: #F6ECDD;
+  --well: #EFE3D2;
+  --text: #2B1D10;
+  --muted: #6B5845;
+  --brass: #A5661A;
+  --brass-deep: #8A5416;
+  --brass-ink: #6E4210;
+  --plate: #CDAB81;
+  --on-brass: #FFFFFF;
+  --btn-a: #A5661A;
+  --btn-b: #8A5416;
+  --cta-a: #9A5E17;
+  --cta-b: #7C4A11;
+  --cta-btn: #FFFAF3;
+  --cta-btn-ink: #6E4210;
+  /* @end */
+  --line: rgba(120, 80, 30, 0.14);
+  --line-strong: rgba(120, 80, 30, 0.24);
+  --shadow: rgba(120, 80, 30, 0.14);
+  --glass: rgba(255, 250, 243, 0.66);
+  --glass-strong: rgba(255, 250, 243, 0.82);
+  --glass-line: rgba(255, 255, 255, 0.7);
+  --blob-1: rgba(246, 196, 160, 0.75);
+  --blob-2: rgba(240, 160, 92, 0.42);
+  --blob-3: rgba(252, 236, 210, 0.95);
+  --tone: rgba(197, 128, 46, 0.22);
+  --grain-opacity: 0.035;
+  --glow: rgba(214, 150, 70, 0.16);
+  --cipher: #A5661A;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  /* @tokens dark */
+  --bg: #14100B;
+  --surface: #1D1710;
+  --surface-2: #251D14;
+  --well: #2E241A;
+  --text: #F4E9DA;
+  --muted: #B9A58C;
+  --brass: #D79A4A;
+  --brass-deep: #B97E32;
+  --brass-ink: #E3AC62;
+  --plate: #8F7650;
+  --on-brass: #FFFFFF;
+  --btn-a: #A5661A;
+  --btn-b: #8A5416;
+  --cta-a: #9A5E17;
+  --cta-b: #6E420F;
+  --cta-btn: #1D1710;
+  --cta-btn-ink: #F4E9DA;
+  /* @end */
+  --line: rgba(232, 186, 120, 0.12);
+  --line-strong: rgba(232, 186, 120, 0.2);
+  --shadow: rgba(6, 3, 0, 0.5);
+  --glass: rgba(29, 23, 16, 0.62);
+  --glass-strong: rgba(29, 23, 16, 0.8);
+  --glass-line: rgba(232, 186, 120, 0.14);
+  --blob-1: rgba(120, 66, 22, 0.36);
+  --blob-2: rgba(166, 92, 26, 0.24);
+  --blob-3: rgba(74, 52, 30, 0.42);
+  --tone: rgba(160, 96, 30, 0.16);
+  --grain-opacity: 0.04;
+  --glow: rgba(215, 154, 74, 0.13);
+  --cipher: #D79A4A;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    /* @tokens dark-system */
+    --bg: #14100B;
+    --surface: #1D1710;
+    --surface-2: #251D14;
+    --well: #2E241A;
+    --text: #F4E9DA;
+    --muted: #B9A58C;
+    --brass: #D79A4A;
+    --brass-deep: #B97E32;
+    --brass-ink: #E3AC62;
+    --plate: #8F7650;
+    --on-brass: #FFFFFF;
+    --btn-a: #A5661A;
+    --btn-b: #8A5416;
+    --cta-a: #9A5E17;
+    --cta-b: #6E420F;
+    --cta-btn: #1D1710;
+    --cta-btn-ink: #F4E9DA;
+    /* @end */
+    --line: rgba(232, 186, 120, 0.12);
+    --line-strong: rgba(232, 186, 120, 0.2);
+    --shadow: rgba(6, 3, 0, 0.5);
+    --glass: rgba(29, 23, 16, 0.62);
+    --glass-strong: rgba(29, 23, 16, 0.8);
+    --glass-line: rgba(232, 186, 120, 0.14);
+    --blob-1: rgba(120, 66, 22, 0.36);
+    --blob-2: rgba(166, 92, 26, 0.24);
+    --blob-3: rgba(74, 52, 30, 0.42);
+    --tone: rgba(160, 96, 30, 0.16);
+    --grain-opacity: 0.04;
+    --glow: rgba(215, 154, 74, 0.13);
+    --cipher: #D79A4A;
+  }
+}
+
+/* Non-colour tokens */
+:root {
+  --font-sans: "Plus Jakarta Sans", "Jakarta Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-hover: 0.25s;
+
+  --step--1: clamp(0.84rem, 0.82rem + 0.1vw, 0.9rem);
+  --step-0: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --step-1: clamp(1.08rem, 1.02rem + 0.3vw, 1.25rem);
+  --step-2: clamp(1.2rem, 1.1rem + 0.5vw, 1.5rem);
+  --step-3: clamp(2rem, 1.35rem + 2.6vw, 3.5rem);
+  --step-hero: clamp(2.3rem, 1rem + 4.2vw, 4.5rem);
+
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --space-section: clamp(4.5rem, 2.5rem + 8vw, 9.5rem);
+  --space-head: clamp(2.25rem, 1.5rem + 3vw, 4rem);
+  --radius-card: clamp(24px, 2vw + 16px, 32px);
+  --radius-btn: 15px;
+  --nav-h: 64px;
+  --nav-top: max(12px, env(safe-area-inset-top));
+  --container: 1240px;
+}
