@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 440" width="100%" height="auto" preserveAspectRatio="xMidYMid meet">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14100B" />
+      <stop offset="50%" stop-color="#1B140D" />
+      <stop offset="100%" stop-color="#0E0B07" />
+    </linearGradient>
+
+    <linearGradient id="brass-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C58532" />
+      <stop offset="35%" stop-color="#F5D298" />
+      <stop offset="70%" stop-color="#CD903E" />
+      <stop offset="100%" stop-color="#E9B973" />
+    </linearGradient>
+
+    <linearGradient id="gold-shimmer" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#A5661A">
+        <animate attributeName="stop-color" values="#A5661A;#F9D79B;#A5661A" dur="4s" repeatCount="indefinite" />
+      </stop>
+      <stop offset="50%" stop-color="#F9D79B">
+        <animate attributeName="stop-color" values="#F9D79B;#A5661A;#F9D79B" dur="4s" repeatCount="indefinite" />
+      </stop>
+      <stop offset="100%" stop-color="#A5661A">
+        <animate attributeName="stop-color" values="#A5661A;#F9D79B;#A5661A" dur="4s" repeatCount="indefinite" />
+      </stop>
+    </linearGradient>
+
+    <linearGradient id="card-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#251D14" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#17120B" stop-opacity="0.95" />
+    </linearGradient>
+
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#C58532" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#C58532" stop-opacity="0" />
+    </radialGradient>
+
+    <filter id="blur-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="32" />
+    </filter>
+
+    <filter id="subtle-shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.6" />
+    </filter>
+
+    <style>
+      @keyframes bolt-move {
+        0%, 15% { transform: translateX(0px); }
+        45%, 65% { transform: translateX(52px); }
+        85%, 100% { transform: translateX(0px); }
+      }
+      @keyframes pulse-ring {
+        0%, 100% { opacity: 0.35; transform: scale(1); }
+        50% { opacity: 0.85; transform: scale(1.04); }
+      }
+      @keyframes float-badge {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-3px); }
+      }
+      @keyframes glow-breathe {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 0.85; }
+      }
+      .anim-bolt {
+        animation: bolt-move 5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+        transform-origin: 200px 220px;
+      }
+      .anim-ring {
+        animation: pulse-ring 4s ease-in-out infinite;
+        transform-origin: 200px 220px;
+      }
+      .anim-glow {
+        animation: glow-breathe 4s ease-in-out infinite;
+      }
+      .badge-1 { animation: float-badge 3.6s ease-in-out infinite; }
+      .badge-2 { animation: float-badge 3.6s ease-in-out 0.4s infinite; }
+      .badge-3 { animation: float-badge 3.6s ease-in-out 0.8s infinite; }
+      .badge-4 { animation: float-badge 3.6s ease-in-out 1.2s infinite; }
+      .title-text {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Plus Jakarta Sans", sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+      .sub-text {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Plus Jakarta Sans", sans-serif;
+        font-weight: 400;
+        letter-spacing: -0.01em;
+      }
+      .mono-text {
+        font-family: "JetBrains Mono", Consolas, monospace;
+        font-weight: 600;
+      }
+    </style>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="440" rx="24" fill="url(#bg-grad)" />
+
+  <!-- Grid overlay -->
+  <g opacity="0.06" stroke="#FFFFFF" stroke-width="1">
+    <path d="M0 60 H1200 M0 120 H1200 M0 180 H1200 M0 240 H1200 M0 300 H1200 M0 360 H1200 M0 420 H1200" />
+    <path d="M60 0 V440 M120 0 V440 M180 0 V440 M240 0 V440 M300 0 V440 M360 0 V440 M420 0 V440 M480 0 V440 M540 0 V440 M600 0 V440 M660 0 V440 M720 0 V440 M780 0 V440 M840 0 V440 M900 0 V440 M960 0 V440 M1020 0 V440 M1080 0 V440 M1140 0 V440" />
+  </g>
+
+  <!-- Ambient Golden Glow behind Icon -->
+  <circle class="anim-glow" cx="200" cy="220" r="160" fill="url(#glow)" filter="url(#blur-glow)" />
+
+  <!-- Outer Pulse Ring -->
+  <circle class="anim-ring" cx="200" cy="220" r="118" fill="none" stroke="#C58532" stroke-width="1.5" stroke-dasharray="8 6" opacity="0.4" />
+
+  <!-- Left: The Deadlock Vault Lock Card -->
+  <g transform="translate(80, 100)" filter="url(#subtle-shadow)">
+    <!-- Base Plate -->
+    <rect x="0" y="0" width="240" height="240" rx="48" fill="#1C160F" stroke="#3A2A1A" stroke-width="2" />
+    <rect x="12" y="12" width="216" height="216" rx="40" fill="#251D14" stroke="#4A3622" stroke-width="1" />
+
+    <!-- Bolt Strike Plate -->
+    <rect x="160" y="44" width="34" height="152" rx="14" fill="#8F7650" opacity="0.9" />
+
+    <!-- Animated Bolt Bar -->
+    <g class="anim-bolt">
+      <rect x="64" y="94" width="115" height="52" rx="24" fill="#CDAB81" />
+    </g>
+
+    <!-- Bolt Disc -->
+    <circle cx="95" cy="120" r="54" fill="#FFFFFF" opacity="0.98" />
+    <circle cx="95" cy="120" r="46" fill="#F8EADA" />
+
+    <!-- Keyhole / Core -->
+    <circle cx="95" cy="110" r="14" fill="#A5661A" />
+    <path d="M88 116 L102 116 L106 142 Q106 146 100 146 L90 146 Q84 146 84 142 Z" fill="#A5661A" />
+  </g>
+
+  <!-- Right: Header Copy & Badges -->
+  <g transform="translate(370, 70)">
+    <!-- Release Pill Tag -->
+    <g class="badge-1">
+      <rect x="0" y="0" width="220" height="28" rx="14" fill="#2B1F13" stroke="#553C22" stroke-width="1" />
+      <circle cx="14" cy="14" r="4" fill="#4ADE80" />
+      <text x="26" y="18" fill="#EAD7C0" font-size="12" class="mono-text">v0.1.0 · WINDOWS 10 / 11</text>
+    </g>
+
+    <!-- Main Title -->
+    <text x="0" y="85" fill="url(#brass-grad)" font-size="52" class="title-text">Deadlock</text>
+    <text x="240" y="85" fill="#FFFFFF" font-size="52" class="title-text" opacity="0.95">File Vault</text>
+
+    <!-- Punchline -->
+    <text x="0" y="125" fill="#E6D3BC" font-size="20" class="title-text" opacity="0.92">Your private files, behind a real lock.</text>
+
+    <!-- Descriptive Subtitle -->
+    <text x="0" y="162" fill="#9F886E" font-size="15" class="sub-text">
+      Free, local-first encrypted vault for Windows. Add files, and they are encrypted on your PC.
+    </text>
+    <text x="0" y="186" fill="#9F886E" font-size="15" class="sub-text">
+      No accounts, no telemetry, no cloud sync. Boring, peer-reviewed cryptography.
+    </text>
+
+    <!-- Feature Chips Container -->
+    <g transform="translate(0, 224)">
+      <!-- Badge 1: Encryption -->
+      <g class="badge-1">
+        <rect x="0" y="0" width="180" height="34" rx="8" fill="#23190E" stroke="#553C22" stroke-width="1" />
+        <text x="14" y="21" fill="#F3D29D" font-size="12" class="mono-text">🔒 XChaCha20-Poly1305</text>
+      </g>
+
+      <!-- Badge 2: Key Derivation -->
+      <g class="badge-2" transform="translate(192, 0)">
+        <rect x="0" y="0" width="130" height="34" rx="8" fill="#23190E" stroke="#553C22" stroke-width="1" />
+        <text x="14" y="21" fill="#F3D29D" font-size="12" class="mono-text">⚡ Argon2id</text>
+      </g>
+
+      <!-- Badge 3: Local First -->
+      <g class="badge-3" transform="translate(334, 0)">
+        <rect x="0" y="0" width="144" height="34" rx="8" fill="#23190E" stroke="#553C22" stroke-width="1" />
+        <text x="14" y="21" fill="#F3D29D" font-size="12" class="mono-text">💾 100% Offline</text>
+      </g>
+
+      <!-- Badge 4: Recovery -->
+      <g class="badge-4" transform="translate(490, 0)">
+        <rect x="0" y="0" width="168" height="34" rx="8" fill="#23190E" stroke="#553C22" stroke-width="1" />
+        <text x="14" y="21" fill="#F3D29D" font-size="12" class="mono-text">🔑 Recovery Key</text>
+      </g>
+    </g>
+
+    <!-- Quick Stat row -->
+    <g transform="translate(0, 285)" opacity="0.8">
+      <text x="0" y="0" fill="#CDAB81" font-size="12" class="mono-text">✓ 114.8 MB Self-Contained Installer</text>
+      <text x="270" y="0" fill="#CDAB81" font-size="12" class="mono-text">✓ Instant Auto-Lock</text>
+      <text x="440" y="0" fill="#CDAB81" font-size="12" class="mono-text">✓ Zero Cloud Dependencies</text>
+    </g>
+  </g>
+</svg>

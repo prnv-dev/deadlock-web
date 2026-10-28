@@ -1,60 +1,207 @@
-# Deadlock — landing page
+<div align="center">
 
-Static landing page for **Deadlock**, a free, local-first encrypted file vault for Windows.
-Vite + vanilla TypeScript + plain CSS custom properties. GSAP (+ ScrollTrigger) and Lenis are bundled from npm; fonts are self-hosted via @fontsource. No analytics, no trackers, no runtime third-party requests.
+<img src="./public/deadlock-banner.svg" alt="Deadlock: Encrypted File Vault for Windows" width="100%" />
 
-## Commands
+# 🔐 Deadlock — Encrypted File Vault
 
-```bash
-npm install
-npm run dev          # local dev server (http://localhost:5173)
-npm run build        # contrast gate + type-check + production build into dist/
-npm run preview      # serve dist/ on http://localhost:4173
+### *Your private files, behind a real lock.*
+
+[![Release](https://img.shields.io/badge/Release-v0.1.0-A5661A?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/prnv-dev/DeadLock/releases)
+[![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-1D1710?style=for-the-badge&logo=windows11&logoColor=D79A4A)](https://github.com/prnv-dev/deadlock-web)
+[![Cryptography](https://img.shields.io/badge/Crypto-XChaCha20--Poly1305-6E4210?style=for-the-badge&logo=letsencrypt&logoColor=F5D298)](https://libsodium.gitbook.io/doc/)
+[![KDF](https://img.shields.io/badge/KDF-Argon2id-3A2613?style=for-the-badge)](https://en.wikipedia.org/wiki/Argon2)
+[![Lighthouse](https://img.shields.io/badge/Lighthouse-100%2F100%2F100%2F100-2E7D32?style=for-the-badge&logo=lighthouse&logoColor=white)](./shots/lighthouse/summary.json)
+[![License](https://img.shields.io/badge/License-MIT-332314?style=for-the-badge)](LICENSE)
+
+<br/>
+
+**[⬇️ Download Installer (114.8 MB)](#-direct-download--verification)** •
+**[✨ Features](#-core-features)** •
+**[🧪 Tech Architecture](#-architecture--animation-system)** •
+**[📊 Verification Suite](#-verification-commands)** •
+**[🌐 GitHub Source](https://github.com/prnv-dev/DeadLock)**
+
+---
+
+</div>
+
+<br/>
+
+## 🎯 What is Deadlock?
+
+> **Deadlock is a free, local-first encrypted file vault for Windows 10 & 11.**  
+> Pick files or folders and lock them down behind strong, peer-reviewed cryptography. No accounts, no subscriptions, no telemetry, and no cloud sync to trust. Your files stay encrypted on your own machine.
+
+<br/>
+
+<div align="center">
+  <table>
+    <tr>
+      <td width="50%" align="center">
+        <b>🌙 Dark Theme (Warm Obsidian & Brass)</b><br/><br/>
+        <img src="./shots/1280-dark-fold.png" alt="Deadlock Dark Mode Landing Page" width="100%" />
+      </td>
+      <td width="50%" align="center">
+        <b>☀️ Light Theme (Warm Paper & Amber)</b><br/><br/>
+        <img src="./shots/1280-light-fold.png" alt="Deadlock Light Mode Landing Page" width="100%" />
+      </td>
+    </tr>
+  </table>
+</div>
+
+<br/>
+
+---
+
+## ⚡ Core Features
+
+```
+  ┌───────────────────┐       ┌───────────────────────┐       ┌───────────────────┐
+  │   Add to Vault    │ ───►  │  XChaCha20-Poly1305   │ ───►  │   Offline Key     │
+  │  Drag & drop any  │       │   Argon2id password   │       │ 14-group recovery │
+  │   file or folder  │       │  derivation (libsodium│       │  backup you keep  │
+  └───────────────────┘       └───────────────────────┘       └───────────────────┘
 ```
 
-`dist/` is plain static files with relative URLs, so it works from any host root or sub-path.
+| Feature | Description | Behind the Scenes |
+| :--- | :--- | :--- |
+| **🛡️ Boring Cryptography** | No homemade ciphers. Industry-standard primitives. | **XChaCha20-Poly1305** authenticated encryption + **Argon2id** memory-hard key derivation built on **libsodium**. |
+| **💾 Local-First & Sovereign** | Your vault is simply a directory on your PC or external drive. | Zero cloud sync. Uninstalling Deadlock never removes your encrypted vault. |
+| **🔑 Real Offline Recovery** | Lost your master password? You can still regain entry. | 14-group mnemonic recovery key. Saved offline, regenerated instantly. |
+| **⚡ Backups that Verify** | Backup vault to a USB drive with automatic integrity check. | Copies encrypted vault and checks every file byte-for-byte against the original. |
+| **🔒 Auto-Lock & Clipboard Shield** | Auto-locks when you step away from your PC. | Sensitive data copied to clipboard is automatically wiped after 30s and excluded from Windows clipboard history. |
+| **🤫 Quiet Lock Screen** | Locked means locked. Minimal surface area. | The lock screen gives nothing away about vault location or what files are stored inside. |
 
-Verification (all use Playwright/Chromium against the built `dist/`):
+<br/>
 
-| Command | What it does | Output |
-| --- | --- | --- |
-| `npm run contrast` | WCAG AA check of every text/background token pair (also runs inside `build`, which fails on any miss) | console |
-| `npm run shots` | Full-page + first-screen screenshots at 360/390/768/1280/1920 in light and dark; overflow, tap-target and CLS checks at 360/390/430/768/1024/1280/1440/1920 and phone landscape | `shots/*.png`, `shots/layout-report.json` |
-| `npm run frames` | Frame sequences: intro, deadbolt scroll (desktop + phone), bento reveal, pinned steps, mobile menu (incl. focus trap/Esc), theme toggle, FAQ | `shots/frames/` |
-| `npm run reduced` | `prefers-reduced-motion` and JavaScript-disabled runs | `shots/reduced/` |
-| `npm run lighthouse` | Warm-up + 3 Lighthouse runs each for mobile and desktop; median reports saved | `shots/lighthouse/` |
-| `npm run perf` / `perf:headed` | rAF frame times during real scroll gestures (desktop wheel, phone touch with 4x CPU slowdown) | `shots/perf-*.json` |
-| `npm run icons` | Regenerates favicons, apple-touch icon, manifest icons and the 1200×630 OG image from the icon-tile SVG | `public/` |
-| `npm run font-metrics` | Re-measures the metric-matched fallback font values used in `src/styles/fonts.css` | console |
-| `npm run verify` | build + shots + frames + reduced + lighthouse | |
+---
 
-## Changing links and copy
+## ⬇️ Direct Download & Verification
 
-- **The three outbound links** (Download, source, issues), the version text, author and year live in **`src/config.ts`**. They are injected into `index.html` at build time through `{{download}}`, `{{source}}`, `{{issues}}`, `{{version}}`, `{{author}}`, `{{year}}` placeholders (see the `deadlock-html` plugin in `vite.config.ts`; an unknown placeholder fails the build).
-- If the site gets a public URL, set `SITE.url` in `src/config.ts`: a canonical link and `og:url` are then emitted and the OG image URL becomes absolute.
-- **All copy is plain HTML in `index.html`**, in reading order (hero, features bento, how it works, honest limits, FAQ, CTA, footer). Edit text directly. Big headings wrap trailing punctuation as `<span class="p">.</span>` to tighten the heavy-weight comma/period spacing — keep that wrapper if you edit those headings.
-- Colours are tokens in `src/styles/tokens.css` (light block, plus two identical dark blocks: one for the toggle, one for the OS preference). `npm run contrast` checks them and verifies the two dark blocks match.
+The Windows standalone installer is hosted directly on this site with **no runtime external network dependencies**:
 
-## How the animation system is organised
+<div align="center">
 
-Content is complete and visible from HTML + CSS alone. Motion is layered on top:
+| File | Size | Platform | SHA-256 Hash |
+| :--- | :--- | :--- | :--- |
+| `Deadlock-Setup-0.1.0.exe` | **114.8 MB** | Windows 10 / 11 | `3ccd2b01b35fd7918215a5a57b3adc213736c93dd12322f77ca89386618047b2` |
 
-1. **First paint: CSS only** (`src/styles/motion.css`). A tiny inline script in `<head>` sets `html.motion` (no reduced-motion preference) and `html.intro` (first load this session, via `sessionStorage`) plus the saved theme. The intro (nav slide, masked h1 line rise, sub-copy/buttons, card scale + shadow bloom, chip) and the deadbolt lock + keyhole pulse are CSS keyframes, all finished within ~1.2 s. Nothing waits for JavaScript. The hero sub-copy rises with a transform only (no fade), so the largest text is painted at full opacity on the first frame and LCP never waits for the intro.
-2. **Bootstrap** (`src/main.ts`, ~1 KB). Loads the main bundle (`src/app.ts`) on the first interaction, or 1.2 s after `load`, whichever comes first. Parsing the bundle therefore never competes with first paint or the intro frames.
-3. **App** (`src/app.ts`) wires modules from `src/motion/` after fonts are ready, yielding between steps:
-   - `smooth.ts` — Lenis (`lerp 0.09`) driven by `gsap.ticker`, `lenis.on('scroll', ScrollTrigger.update)`. Not created on touch-first devices (native momentum) or with reduced motion.
-   - `anchors.ts` — in-page links: offset for the floating nav, focus moved to the target heading, `history.pushState`. Jumps longer than 3 screens use a View Transition cross-fade where supported.
-   - `reveal.ts` + `split.ts` — once-only reveals: masked line rise for `[data-split]` headings, rise + fade for `[data-reveal]`, bento wave for `[data-card]` (then icons draw via `stroke-dashoffset` on `pathLength="1"` paths), divider hairlines, CTA scale .96 → 1. Elements already in view when JS arrives are never hidden.
-   - `hero.ts` — scroll-scrubbed deadbolt (unlock while the mark is on screen, re-lock as it reaches the nav) on an inner `<g>` (the CSS intro owns the outer one), and the 4° lock-card tilt.
-   - `background.ts` — one ScrollTrigger interpolates the three blob positions and the brass tone layer between per-section keyframes (transform + opacity only). CSS drift loops pause when the tab is hidden.
-   - `nav.ts` — compact pill after 80 px; one shared brass underline slides to the current section.
-   - `steps.ts` — `gsap.matchMedia`: pinned horizontal sequence with a filling rail on screens ≥1024×680, vertical timeline below that.
-   - `pointer.ts` — magnetic primary buttons (max 8 px, elastic return) and the cursor-following card glow (CSS variables written once per frame). Only on `(hover: hover) and (pointer: fine)`.
-   - `faq.ts` — native `<details>`; open/close animates the panel opacity and FLIP-translates everything below (no height animation).
-   - `menu.ts` — full-screen modal `<dialog>`: focus trapped (Tab wraps), Esc closes, scroll locked, `aria-expanded`, focus returned. Works without JS in browsers that support `commandfor`.
-   - `theme.ts` — light/dark toggle saved in `localStorage` (try/catch), circular View Transition reveal from the button where supported.
-4. **Scenes** (`src/scenes/`) — the Add-to-Vault loop, recovery-key flip-in and backup line/check are code-split and imported by an IntersectionObserver 400 px before they scroll in. Their SVG/HTML is already in the page, showing the final frame, which is also what reduced-motion and no-JS visitors see. The vault loop only runs while on screen.
+</div>
 
-**Reduced motion:** no Lenis, no parallax, no pinning, no loops, no intro. Below-the-fold content appears with a 0.35 s opacity fade, and SVGs are shown fully drawn.
+### 🔍 Verify Your Download in PowerShell
 
-Rules followed: only `transform` and `opacity` are animated, apart from `stroke-dashoffset` for line draws and the `clip-path` circle of the theme View Transition. `will-change` is used only on the three scroll-driven background layers.
+The hash on this page must match the one Windows prints:
+
+```powershell
+Get-FileHash .\Deadlock-Setup-0.1.0.exe -Algorithm SHA256
+```
+
+> [!NOTE]
+> **Windows SmartScreen Note:** The installer is downloaded directly from this site and is not code-signed yet, so Windows SmartScreen may show a warning on first run. If you downloaded from this site, click **More info**, then **Run anyway**. You can always verify the SHA-256 hash or inspect the source code.
+
+<br/>
+
+---
+
+## 🎨 Interactive Motion & Frame Breakdown
+
+The web landing page uses progressive enhancement: HTML & CSS provide instantaneous first paint, followed by hardware-accelerated GSAP animations and Lenis smooth scrolling.
+
+<div align="center">
+  <table>
+    <tr>
+      <td width="33%" align="center">
+        <b>🔩 Deadbolt Scroll Scrub</b><br/><br/>
+        <img src="./shots/frames/deadbolt-scroll-desktop.png" alt="Deadbolt Scroll Animation" width="100%" />
+      </td>
+      <td width="33%" align="center">
+        <b>📦 Bento Wave Reveal</b><br/><br/>
+        <img src="./shots/frames/bento-reveal.png" alt="Bento Grid Reveal" width="100%" />
+      </td>
+      <td width="33%" align="center">
+        <b>🌗 View-Transition Theme Switch</b><br/><br/>
+        <img src="./shots/frames/theme-toggle.png" alt="Theme Switch Animation" width="100%" />
+      </td>
+    </tr>
+  </table>
+</div>
+
+<br/>
+
+---
+
+## 🛠️ Development & Tooling
+
+Built with **Vite 8**, **TypeScript**, and **Vanilla CSS tokens** (no Tailwind dependency).
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Launch development server with automatic pre-info generation
+npm run dev
+
+# 3. Typecheck, contrast-gate, and build production distribution in dist/
+npm run build
+
+# 4. Confirm the installer exists in dist/ and matches the built HTML hash
+npm run check:download
+
+# 5. Preview production build locally on strict port 4173
+npm run preview
+```
+
+<br/>
+
+---
+
+## 📊 Automated Verification Suite
+
+Every aspect of the site is tested headlessly using Playwright and Chromium:
+
+```bash
+npm run verify   # Runs build + shots + frames + reduced + lighthouse in sequence
+```
+
+| Script | Purpose | Output Target |
+| :--- | :--- | :--- |
+| `npm run contrast` | Enforces WCAG AA contrast on every brand token pair in light & dark modes | Console validation |
+| `npm run check:download` | Asserts installer integrity and SHA-256 match in built HTML | Console verification |
+| `npm run shots` | Responsive screenshot matrix at 360, 390, 768, 1280, and 1920 viewport widths | `shots/*.png`, `layout-report.json` |
+| `npm run frames` | Frame-by-frame recordings of key interactive state transitions | `shots/frames/` |
+| `npm run reduced` | Verifies `prefers-reduced-motion` and no-JS fallback behaviors | `shots/reduced/` |
+| `npm run lighthouse` | Automated multi-run Lighthouse performance audit | `shots/lighthouse/summary.json` |
+| `npm run perf` | Measures rAF frame times under synthetic CPU throttling | `shots/perf-*.json` |
+
+<br/>
+
+---
+
+## 🏛️ Architecture & Performance Principles
+
+<details>
+<summary><b>📖 Expand Architecture Details</b></summary>
+<br/>
+
+1. **Instant First Paint (CSS Only)**  
+   The critical intro sequence (nav slide, masked heading rise, and initial card scale) runs via pure CSS keyframes. First contentful paint (FCP) never waits on JavaScript execution.
+2. **Deferred Script Hydration (`src/main.ts`)**  
+   The main interactive bundle (`src/app.ts`) is deferred until first user interaction (`pointerdown`, `scroll`, `keydown`) or 1.2s post-load, safeguarding 100/100 Lighthouse performance on mobile devices.
+3. **Single Source of Truth (`src/config.ts`)**  
+   Download paths, product versions, and outbound links are managed in a single module and injected statically into HTML via the custom `deadlockHtml` plugin.
+4. **Self-Contained Bundles**  
+   Single CSS output inlined into `dist/index.html` at build time to save render-blocking network requests on mobile connections.
+
+</details>
+
+<br/>
+
+---
+
+<div align="center">
+
+Made with care by **[prnv-dev](https://github.com/prnv-dev)** • 2026
+
+*Deadlock is free, open source, and built for user privacy.*
+
+</div>
