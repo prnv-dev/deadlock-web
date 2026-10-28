@@ -6,8 +6,7 @@ node_modules/
 # Production build output
 dist/
 
-# Large binaries and installers (GitHub rejects files > 100 MB)
-*.exe
+# Large binaries (exceeds GitHub limits if not in LFS)
 *.dll
 *.iso
 
